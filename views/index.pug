@@ -13,8 +13,8 @@ html(lang='en')
  body
    h1= heading
    form(hx-post="/submit" hx-swap="beforeend" hx-target="#new-book" class="mb-3")
-     input(type="text" placeholder="Book Title" name="title" class="form-control mb-3")
-     input(type="text" placeholder="Book Author" name="author" class="form-control mb-3")
+     input(type="text" placeholder= tableHeading1 name="title" class="form-control mb-3")
+     input(type="text" placeholder= tableHeading2 name="author" class="form-control mb-3")
      button(type="submit" class="btn btn-primary") Submit
    table
      thead 
