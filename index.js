@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const bookRoutes = require("./app/routes/bookRoutes");
 const sequelize = require("./app/model/dbconfig");
 const Book = require("./app/model/book");
+const path = require('path');
 
 
 // automatically creating table on startup
