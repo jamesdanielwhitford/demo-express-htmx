@@ -17,6 +17,9 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.set('view engine', 'pug');
 // application routes
 app.use("/api", bookRoutes.routes);
