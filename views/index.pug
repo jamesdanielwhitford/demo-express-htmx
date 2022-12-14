@@ -19,14 +19,14 @@ html(lang='en')
    table
      thead 
        tr 
-         th Book Title 
-         th Book Author
+         th= tableHeading1 
+         th= tableHeading2
      tbody(id="new-book" hx-target="closest tr" hx-swap="outerHTML swap:0.5s")
        each book in books
          tr 
            td #{book.name}
            td #{book.author} 
            td 
-             button(class="btn btn-primary" hx-get=`/get-edit-form/${book.id}`) Edit Book
+             button(class="btn btn-primary" hx-get=`/get-edit-form/${book.id}`) Edit 
            td 
              button(hx-delete=`/delete/${book.id}` class="btn btn-primary") Delete
