@@ -27,6 +27,7 @@ app.get('/', async (req, res) => {
     books: books.rows, 
     title: process.env.title,
     logo: process.env.logo,
+    font: process.env.font,
     heading: process.env.heading, 
     tableHeading1: process.env.tableHeading1, 
     tableHeading2: process.env.tableHeading2});
