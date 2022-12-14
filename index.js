@@ -27,12 +27,11 @@ app.get('/', async (req, res) => {
   return res.render('index', {
     books: books.rows,
     navbar: process.env.navbar,
-    // title: process.env.title,
-    // logo: process.env.logo,
-    // font: process.env.font,
-    // heading: process.env.heading,
-    // tableHeading1: process.env.tableHeading1,
-    // tableHeading2: process.env.tableHeading2,
+    title: process.env.title,
+    font: process.env.font,
+    heading: process.env.heading,
+    tableHeading1: process.env.tableHeading1,
+    tableHeading2: process.env.tableHeading2,
   });
 });
 
