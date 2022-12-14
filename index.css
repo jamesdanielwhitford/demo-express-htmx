@@ -2,3 +2,7 @@
     width: 5%;
     height: 10%;
 }
+
+body {
+    font: env(font);
+}
