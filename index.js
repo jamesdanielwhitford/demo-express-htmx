@@ -23,7 +23,12 @@ app.use("/api", bookRoutes.routes);
 
 app.get('/', async (req, res) => {
   const books = await Book.findAndCountAll();
-  return res.render('index', {books: books.rows});
+  if (process.env.x == 'pizza') {
+    head = 'Pizza Reccomendations';
+  } else {
+    head = 'Book Reccomendations';
+  }
+  return res.render('index', {books: books.rows, heading: heading});
 });
 
 app.get('/get-book-row/:id', async (req, res) => {
