@@ -28,7 +28,7 @@ app.get('/', async (req, res) => {
   } else {
     head = 'Book Reccomendations';
   }
-  return res.render('index', {books: books.rows, heading: heading});
+  return res.render('index', {books: books.rows, heading: head});
 });
 
 app.get('/get-book-row/:id', async (req, res) => {
