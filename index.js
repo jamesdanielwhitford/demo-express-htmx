@@ -29,7 +29,7 @@ app.get('/', async (req, res) => {
   } else {
     head = 'Book Reccomendations';
   }
-  return res.render('index', {books: books.rows, heading: head});
+  return res.render('index', {books: books.rows, heading: process.env.x, tableHeading1: process.env.tableHeading1, tableHeading2: process.env.tableHeading2});
 });
 
 app.get('/get-book-row/:id', async (req, res) => {
