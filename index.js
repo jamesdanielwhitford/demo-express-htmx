@@ -27,9 +27,11 @@ app.use("/api", bookRoutes.routes);
 
 app.get('/', async (req, res) => {
   const books = await Book.findAndCountAll();
+  const navbar = process.env.navbar == "True"
   return res.render('index', {
     books: books.rows, 
     title: process.env.title,
+    navbar: navbar,
     logo: process.env.logo,
     font: process.env.font,
     heading: process.env.heading, 
