@@ -23,7 +23,7 @@ app.use("/api", bookRoutes.routes);
 
 app.get('/', async (req, res) => {
   const books = await Book.findAndCountAll();
-  var x = 'pizza'
+  var x = process.env.x
   if (x == 'pizza') {
     head = 'Pizza Reccomendations';
   } else {
