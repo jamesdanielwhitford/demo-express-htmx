@@ -4,12 +4,6 @@ const bookRoutes = require("./app/routes/bookRoutes");
 const sequelize = require("./app/model/dbconfig");
 const Book = require("./app/model/book");
 
-// if env variable x == True make 
-if (process.env.x == 'pizza') {
-  document.querySelector('h1').innerHTML = 'Pizza Reccomendations';
-} else {
-  document.querySelector('h1').innerHTML = 'Book Reccomendations';
-}
 
 // automatically creating table on startup
 sequelize.sync({ force: true }).then(async () => {
