@@ -1,13 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bookRoutes = require("./app/routes/bookRoutes");
-const sequelize = require("./app/model/dbconfig");
-const Book = require("./app/model/book");
-
+const bookRoutes = require('./app/routes/bookRoutes');
+const sequelize = require('./app/model/dbconfig');
+const Book = require('./app/model/book');
+// require('dotenv').config();
 
 // automatically creating table on startup
 sequelize.sync({ force: true }).then(async () => {
-  console.log("db is ready...");
+  console.log('db is ready...');
 });
 
 const app = express();
@@ -17,23 +17,23 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-
 app.set('view engine', 'pug');
 // application routes
-app.use("/api", bookRoutes.routes);
+app.use('/api', bookRoutes.routes);
 
 app.get('/', async (req, res) => {
   const books = await Book.findAndCountAll();
+  console.log(process.env.navbar);
   return res.render('index', {
-    books: books.rows, 
-    title: process.env.title,
-    navbar: navbar,
-    logo: process.env.logo,
-    font: process.env.font,
-    heading: process.env.heading, 
-    tableHeading1: process.env.tableHeading1, 
-    tableHeading2: process.env.tableHeading2});
+    books: books.rows,
+    navbar: process.env.navbar,
+    // title: process.env.title,
+    // logo: process.env.logo,
+    // font: process.env.font,
+    // heading: process.env.heading,
+    // tableHeading1: process.env.tableHeading1,
+    // tableHeading2: process.env.tableHeading2,
+  });
 });
 
 app.get('/get-book-row/:id', async (req, res) => {
@@ -80,13 +80,13 @@ app.put('/update/:id', async (req, res) => {
   const id = req.params.id;
   // update book
   await Book.findByPk(id).then((item) => {
-      item
-        .update({
-          name: req.body.title,
-          author: req.body.author
-        })
-        .then(() => {
-          return res.send(`<tr>
+    item
+      .update({
+        name: req.body.title,
+        author: req.body.author,
+      })
+      .then(() => {
+        return res.send(`<tr>
     <td>${req.body.title}</td>
     <td>${req.body.author}</td>
     <td>
@@ -102,15 +102,15 @@ app.put('/update/:id', async (req, res) => {
         </button>
     </td>
 </tr>`);
-        });
+      });
   });
 });
 
 app.delete('/delete/:id', async (req, res) => {
   const id = req.params.id;
   await Book.findOne({ where: { id: id } }).then((book) => {
-      book.destroy();
-      return res.send("");
+    book.destroy();
+    return res.send('');
   });
 });
 
@@ -118,11 +118,11 @@ app.post('/submit', async (req, res) => {
   console.log('body - ', req.body);
   const book = {
     name: req.body.title,
-    author: req.body.author
+    author: req.body.author,
   };
   await Book.create(book).then((x) => {
-      //console.log('id- ', x.null)
-      // send id of recently created item
+    //console.log('id- ', x.null)
+    // send id of recently created item
     return res.send(`<tr>
     <td>${req.body.title}</td>
     <td>${req.body.author}</td>
