@@ -41,7 +41,7 @@ app.get('/get-book-row/:id', async (req, res) => {
     <td>
         <button class="btn btn-primary"
             hx-get="/get-edit-form/${id}">
-            Edit Book
+            Edit
         </button>
     </td>
     <td>
@@ -88,7 +88,7 @@ app.put('/update/:id', async (req, res) => {
     <td>
         <button class="btn btn-primary"
             hx-get="/get-edit-form/${id}">
-            Edit Book
+            Edit 
         </button>
     </td>
     <td>
@@ -125,7 +125,7 @@ app.post('/submit', async (req, res) => {
     <td>
         <button class="btn btn-primary"
             hx-get="/get-edit-form/${x.null}">
-            Edit Book
+            Edit 
         </button>
     </td>
     <td>
