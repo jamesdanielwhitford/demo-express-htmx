@@ -23,13 +23,13 @@ app.use("/api", bookRoutes.routes);
 
 app.get('/', async (req, res) => {
   const books = await Book.findAndCountAll();
-  var x = process.env.x
-  if (x == 'pizza') {
-    head = 'Pizza Reccomendations';
-  } else {
-    head = 'Book Reccomendations';
-  }
-  return res.render('index', {books: books.rows, heading: process.env.heading, tableHeading1: process.env.tableHeading1, tableHeading2: process.env.tableHeading2});
+  return res.render('index', {
+    books: books.rows, 
+    title: process.env.title,
+    logo: process.env.logo,
+    heading: process.env.heading, 
+    tableHeading1: process.env.tableHeading1, 
+    tableHeading2: process.env.tableHeading2});
 });
 
 app.get('/get-book-row/:id', async (req, res) => {
