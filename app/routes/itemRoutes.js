@@ -1,21 +1,21 @@
 // represents the router class
-const express = require("express");
+const express = require('express');
 const {
-    getAllBooks,
-    getBook,
-    getBookDelete,
-    saveBook,
-    updateBook,
-    deleteBook
-} = require("../controller/bookController");
- 
+  getAllItems,
+  getItem,
+  getItemDelete,
+  saveItem,
+  updateItem,
+  deleteItem,
+} = require('../controller/itemController');
+
 const router = express.Router();
- 
-router.get("/books", getAllBooks);
- 
+
+router.get('/items', getAllItems);
+
 // http://localhost:3005/api/profile/id
-router.get("/book/:id", getBook);
- 
+router.get('/item/:id', getItem);
+
 // http://localhost:3005/api/profile
 /*
 {
@@ -24,8 +24,8 @@ router.get("/book/:id", getBook);
     "phone": "{{$randomPhoneNumber}}"
 }
 */
-router.post("/book", saveBook);
- 
+router.post('/item', saveItem);
+
 // http://localhost:3005/api/profile/id
 /*
 {
@@ -34,11 +34,11 @@ router.post("/book", saveBook);
     "phone": "{{$randomPhoneNumber}}"
 }
 */
-router.put("/book/:id", updateBook);
- 
+router.put('/item/:id', updateItem);
+
 // http://localhost:3005/api/profile/id
-router.delete("/book/:id", deleteBook);
- 
+router.delete('/item/:id', deleteItem);
+
 module.exports = {
-  routes: router
+  routes: router,
 };
