@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bookRoutes = require('./app/routes/bookRoutes');
+const itemRoutes = require('./app/routes/itemRoutes');
 const sequelize = require('./app/model/dbconfig');
-const Book = require('./app/model/book');
-// require('dotenv').config();
+const Item = require('./app/model/item');
 
 // automatically creating table on startup
 sequelize.sync({ force: true }).then(async () => {
@@ -11,6 +10,8 @@ sequelize.sync({ force: true }).then(async () => {
 });
 
 const app = express();
+app.use(express.static(publicDirectory));
+
 app.use(express.json());
 
 // Configuring body parser middleware
@@ -19,29 +20,41 @@ app.use(bodyParser.json());
 
 app.set('view engine', 'pug');
 // application routes
-app.use('/api', bookRoutes.routes);
+app.use('/api', itemRoutes.routes);
 
 app.get('/', async (req, res) => {
-  const books = await Book.findAndCountAll();
+  const items = await Item.findAndCountAll();
   console.log(process.env.navbar);
+  var display = '';
+  if (process.env.navbar == 'true') {
+    display = '';
+  } else {
+    display = 'none';
+  }
+  var font = `font-family: ${process.env.font}`;
+  var navTheme = `navbar navbar-expand-lg navbar-${process.env.navTheme}`;
+  var navStyle = `background-color: ${process.env.navColor}; display: ${display}`;
+  var buttonColor = `background-color: ${process.env.buttonColor}; color: ${process.env.buttonTextColor}`;
   return res.render('index', {
-    books: books.rows,
-    navbar: process.env.navbar,
+    heading: process.env.heading,
+    buttonColor: buttonColor,
     title: process.env.title,
     logo: process.env.logo,
-    font: process.env.font,
-    heading: process.env.heading,
+    navStyle: navStyle,
+    font: font,
+    items: items.rows,
+    navTheme: navTheme,
     tableHeading1: process.env.tableHeading1,
     tableHeading2: process.env.tableHeading2,
   });
 });
 
-app.get('/get-book-row/:id', async (req, res) => {
+app.get('/get-item-row/:id', async (req, res) => {
   const id = req.params.id;
-  await Book.findOne({ where: { id: id } }).then((book) => {
+  await Item.findOne({ where: { id: id } }).then((item) => {
     return res.send(`<tr>
-    <td>${book.name}</td>
-    <td>${book.author}</td>
+    <td>${item.tableHead1}</td>
+    <td>${item.tableHead2}</td>
     <td>
         <button class="btn btn-primary"
             hx-get="/get-edit-form/${id}">
@@ -60,12 +73,12 @@ app.get('/get-book-row/:id', async (req, res) => {
 
 app.get('/get-edit-form/:id', async (req, res) => {
   const id = req.params.id;
-  await Book.findOne({ where: { id: id } }).then((book) => {
-    return res.send(`<tr hx-trigger='cancel' class='editing' hx-get="/get-book-row/${id}">
-    <td><input name="title" value="${book.name}"/></td>
-    <td><input name="author" value="${book.author}"/></td>
+  await Item.findOne({ where: { id: id } }).then((item) => {
+    return res.send(`<tr hx-trigger='cancel' class='editing' hx-get="/get-item-row/${id}">
+    <td><input name="tableHead1" value="${item.tableHead1}"/></td>
+    <td><input name="tableHead2" value="${item.tableHead2}"/></td>
     <td>
-      <button class="btn btn-primary" hx-get="/get-book-row/${id}">
+      <button class="btn btn-primary" hx-get="/get-item-row/${id}">
         Cancel
       </button>
       <button class="btn btn-primary" hx-put="/update/${id}" hx-include="closest tr">
@@ -78,17 +91,17 @@ app.get('/get-edit-form/:id', async (req, res) => {
 
 app.put('/update/:id', async (req, res) => {
   const id = req.params.id;
-  // update book
-  await Book.findByPk(id).then((item) => {
+  // update item
+  await Item.findByPk(id).then((item) => {
     item
       .update({
-        name: req.body.title,
-        author: req.body.author,
+        tableHead1: req.body.tableHead1,
+        tableHead2: req.body.tableHead2,
       })
       .then(() => {
         return res.send(`<tr>
-    <td>${req.body.title}</td>
-    <td>${req.body.author}</td>
+    <td>${req.body.tableHead1}</td>
+    <td>${req.body.tableHead2}</td>
     <td>
         <button class="btn btn-primary"
             hx-get="/get-edit-form/${id}">
@@ -108,24 +121,24 @@ app.put('/update/:id', async (req, res) => {
 
 app.delete('/delete/:id', async (req, res) => {
   const id = req.params.id;
-  await Book.findOne({ where: { id: id } }).then((book) => {
-    book.destroy();
+  await Item.findOne({ where: { id: id } }).then((item) => {
+    item.destroy();
     return res.send('');
   });
 });
 
 app.post('/submit', async (req, res) => {
   console.log('body - ', req.body);
-  const book = {
-    name: req.body.title,
-    author: req.body.author,
+  const item = {
+    tableHead1: req.body.tableHead1,
+    tableHead2: req.body.tableHead2,
   };
-  await Book.create(book).then((x) => {
+  await Item.create(item).then((x) => {
     //console.log('id- ', x.null)
     // send id of recently created item
     return res.send(`<tr>
-    <td>${req.body.title}</td>
-    <td>${req.body.author}</td>
+    <td>${req.body.tableHead1}</td>
+    <td>${req.body.tableHead2}</td>
     <td>
         <button class="btn btn-primary"
             hx-get="/get-edit-form/${x.null}">
